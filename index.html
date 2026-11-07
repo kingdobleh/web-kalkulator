@@ -94,23 +94,24 @@
             </div>
         </div>
 
-        <!-- Tool 3: Convert USD/USDT ke IDR -->
+        <!-- Tool 3: Convert USD/USDT ke IDR (Auto Real-time Rate) -->
         <div id="tool-crypto" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hidden">
-            <h2 class="text-lg font-bold mb-4 text-slate-900">Konversi USD / USDT ke Rupiah (IDR)</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Jumlah USD / USDT ($)</label>
-                    <input type="number" id="jumlahUsdt" placeholder="100" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Estimasi Rate Kurs (Rp)</label>
-                    <input type="number" id="rateUsdt" value="16000" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
+            <h2 class="text-lg font-bold mb-1 text-slate-900">Konversi USD / USDT ke Rupiah (IDR)</h2>
+            <p class="text-xs text-slate-500 mb-4">Kurs otomatis diperbarui secara live dari pasar keuangan.</p>
+            
+            <div class="mb-4">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Masukkan Jumlah USD / USDT ($)</label>
+                <input type="number" id="jumlahUsdt" placeholder="Contoh: 5" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-lg font-semibold" oninput="hitungCrypto()">
             </div>
-            <button onclick="hitungCrypto()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">Konversi ke IDR</button>
-            <div id="hasilCrypto" class="mt-6 hidden p-5 bg-emerald-50/60 border border-emerald-200 rounded-xl text-center">
-                <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Hasil Konversi Netto:</p>
-                <p id="totalIdr" class="text-2xl font-extrabold text-emerald-700"></p>
+
+            <div class="p-3 bg-slate-100 rounded-xl text-xs text-slate-600 flex justify-between items-center mb-4">
+                <span>Kurs Real-Time Hari Ini:</span>
+                <span id="displayRate" class="font-bold text-emerald-700">Memuat kurs...</span>
+            </div>
+
+            <div id="hasilCrypto" class="p-5 bg-emerald-50/60 border border-emerald-200 rounded-xl text-center">
+                <p class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Hasil Konversi Ke Rupiah:</p>
+                <p id="totalIdr" class="text-3xl font-extrabold text-emerald-700">Rp 0</p>
             </div>
         </div>
 
@@ -151,7 +152,7 @@
         <article class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4 text-sm leading-relaxed text-slate-600">
             <h3 class="text-base font-bold text-slate-900">Platform Utilitas Keuangan & Perhitungan Online - FinDesk</h3>
             <p>
-                FinDesk menyediakan berbagai alat bantu perhitungan otomatis mulai dari estimasi gaji dan upah lembur pekerja, kalkulasi konversi mata uang crypto/fiat, manajemen risiko trading, hingga perhitungan kewajiban zakat secara presisi dan cepat.
+                FinDesk menyediakan berbagai alat bantu perhitungan otomatis mulai dari estimasi gaji dan upah lembur pekerja, kalkulasi konversi mata uang crypto/fiat secara real-time, manajemen risiko trading, hingga perhitungan kewajiban zakat secara presisi.
             </p>
         </article>
 
@@ -170,6 +171,25 @@
     <!-- JavaScript Logic -->
     <script>
         const tabs = ['gaji', 'trading', 'crypto', 'umur', 'zakat'];
+        let liveUsdRate = 16000; // Default cadangan jika jaringan lambat
+
+        // Ambil kurs real-time dari API publik gratis
+        async function fetchLiveRate() {
+            try {
+                const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await res.json();
+                if (data && data.rates && data.rates.IDR) {
+                    liveUsdRate = data.rates.IDR;
+                    document.getElementById('displayRate').innerText = "1 USD = Rp " + Math.round(liveUsdRate).toLocaleString('id-ID');
+                    hitungCrypto(); // Hitung ulang jika nilai terisi
+                }
+            } catch (err) {
+                document.getElementById('displayRate').innerText = "1 USD = Rp " + Math.round(liveUsdRate).toLocaleString('id-ID') + " (Offline Rate)";
+            }
+        }
+
+        // Panggil rate otomatis saat web terbuka
+        fetchLiveRate();
 
         function switchTab(selected) {
             tabs.forEach(tab => {
@@ -205,10 +225,8 @@
 
         function hitungCrypto() {
             const usdt = parseFloat(document.getElementById('jumlahUsdt').value) || 0;
-            const rate = parseFloat(document.getElementById('rateUsdt').value) || 0;
-            const total = usdt * rate;
+            const total = usdt * liveUsdRate;
             document.getElementById('totalIdr').innerText = "Rp " + Math.round(total).toLocaleString('id-ID');
-            document.getElementById('hasilCrypto').classList.remove('hidden');
         }
 
         function hitungUmur() {
