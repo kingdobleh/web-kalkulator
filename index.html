@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinDesk - Premium Utility & Financial Tools</title>
-    <!-- Favicon Logo F (Icon Tab Browser) -->
+    <!-- Favicon Logo F -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232563eb'/><text x='50%' y='70%' font-size='65' font-weight='900' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'>F</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -14,6 +14,24 @@
             background-color: #0b0f19;
             color: #cbd5e1;
         }
+
+        /* Animation Keyframes */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.7); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-logo {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        .animate-tab-content {
+            animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
         .glow-cyan {
             box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
         }
@@ -24,12 +42,16 @@
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(51, 65, 85, 0.6);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .cyber-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
         }
         .cyber-tab-active {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(16, 185, 129, 0.2));
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(16, 185, 129, 0.25));
             border-color: #06b6d4 !important;
             color: #38bdf8 !important;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
         }
     </style>
 </head>
@@ -39,8 +61,8 @@
     <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <!-- Logo F Biru Presisi -->
-                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-md border border-blue-400/40">
+                <!-- Logo F Biru Animasi Glow -->
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center border border-blue-400/40 animate-logo transition-all">
                     <span class="text-white font-black text-xl leading-none">F</span>
                 </div>
                 <h1 class="text-xl font-extrabold tracking-wider text-white">Fin<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Desk</span></h1>
@@ -60,137 +82,142 @@
 
         <!-- Navigation Tabs -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
-            <button onclick="switchTab('gaji')" id="tab-gaji" class="cyber-tab-active p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
+            <button onclick="switchTab('gaji')" id="tab-gaji" class="cyber-tab-active p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
                 <span>💰</span> Gaji & Lembur
             </button>
-            <button onclick="switchTab('trading')" id="tab-trading" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
+            <button onclick="switchTab('trading')" id="tab-trading" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
                 <span>📈</span> Risk Trading
             </button>
-            <button onclick="switchTab('crypto')" id="tab-crypto" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
+            <button onclick="switchTab('crypto')" id="tab-crypto" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
                 <span>🔀</span> USD/USDT
             </button>
-            <button onclick="switchTab('umur')" id="tab-umur" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
+            <button onclick="switchTab('umur')" id="tab-umur" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
                 <span>🎂</span> Hitung Umur
             </button>
-            <button onclick="switchTab('zakat')" id="tab-zakat" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2">
+            <button onclick="switchTab('zakat')" id="tab-zakat" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
                 <span>🌙</span> Hitung Zakat
             </button>
         </div>
 
-        <!-- Tool 1: Gaji & Lembur -->
-        <div id="tool-gaji" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl">
-            <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                <span class="text-emerald-400">💰</span> Hitung Gaji Bersih & Lembur
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Gaji Pokok Bulanan (Rp)</label>
-                    <input type="number" id="gajiPokok" placeholder="Contoh: 5000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah Jam Lembur</label>
-                    <input type="number" id="jamLembur" placeholder="Contoh: 10" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
-                </div>
-            </div>
-            <button onclick="hitungGaji()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold rounded-xl glow-emerald transition-all active:scale-[0.99]">
-                HITUNG SEKARANG
-            </button>
-            <div id="hasilGaji" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl space-y-2 text-sm">
-                <p class="flex justify-between"><span>Upah Lembur / Jam:</span> <span id="upahPerJam" class="font-bold text-white"></span></p>
-                <p class="flex justify-between"><span>Total Uang Lembur:</span> <span id="totalLembur" class="font-bold text-white"></span></p>
-                <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
-                    <span class="text-white">Estimasi Total Pendapatan:</span> <span id="totalGajiBersih" class="text-lg text-emerald-400 font-extrabold"></span>
-                </div>
-            </div>
-        </div>
+        <!-- Container Animation Wrap -->
+        <div id="tool-container">
 
-        <!-- Tool 2: Risk Trading -->
-        <div id="tool-trading" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden">
-            <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                <span class="text-cyan-400">📈</span> Risk-Reward Trading Calculator
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Modal / Balance ($)</label>
-                    <input type="number" id="modalTrading" placeholder="1000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+            <!-- Tool 1: Gaji & Lembur -->
+            <div id="tool-gaji" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl animate-tab-content">
+                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+                    <span class="text-emerald-400">💰</span> Hitung Gaji Bersih & Lembur
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Gaji Pokok Bulanan (Rp)</label>
+                        <input type="number" id="gajiPokok" placeholder="Contoh: 5000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah Jam Lembur</label>
+                        <input type="number" id="jamLembur" placeholder="Contoh: 10" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Toleransi Risiko (%)</label>
-                    <input type="number" id="persenResiko" placeholder="1" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                <button onclick="hitungGaji()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold rounded-xl glow-emerald transition-all duration-200 active:scale-[0.98]">
+                    HITUNG SEKARANG
+                </button>
+                <div id="hasilGaji" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl space-y-2 text-sm animate-tab-content">
+                    <p class="flex justify-between"><span>Upah Lembur / Jam:</span> <span id="upahPerJam" class="font-bold text-white"></span></p>
+                    <p class="flex justify-between"><span>Total Uang Lembur:</span> <span id="totalLembur" class="font-bold text-white"></span></p>
+                    <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
+                        <span class="text-white">Estimasi Total Pendapatan:</span> <span id="totalGajiBersih" class="text-lg text-emerald-400 font-extrabold"></span>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Stop Loss (Pips/%)</label>
-                    <input type="number" id="jarakSL" placeholder="20" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
-                </div>
-            </div>
-            <button onclick="hitungTrading()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-extrabold rounded-xl glow-cyan transition-all active:scale-[0.99]">
-                HITUNG UKURAN POSISI
-            </button>
-            <div id="hasilTrading" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl space-y-2 text-sm">
-                <p class="flex justify-between"><span>Max Risk ($):</span> <span id="maxRiskUsd" class="font-bold text-white"></span></p>
-                <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
-                    <span class="text-white">Rekomendasi Position Size:</span> <span id="posSize" class="text-lg text-cyan-400 font-extrabold"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tool 3: Convert USD/USDT ke IDR -->
-        <div id="tool-crypto" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden">
-            <h2 class="text-lg font-bold mb-1 text-white flex items-center gap-2">
-                <span class="text-emerald-400">🔀</span> Convert USD / USDT ke Rupiah
-            </h2>
-            <p class="text-xs text-slate-400 mb-5">Kurs otomatis tersinkronisasi dari pasar keuangan global.</p>
-            
-            <div class="mb-5">
-                <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah USD / USDT ($)</label>
-                <input type="number" id="jumlahUsdt" placeholder="Contoh: 5" class="w-full p-4 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white text-xl font-bold transition" oninput="hitungCrypto()">
             </div>
 
-            <div class="p-3.5 bg-[#080c14] border border-slate-800 rounded-xl text-xs text-slate-400 flex justify-between items-center mb-5">
-                <span>Rate Kurs Live:</span>
-                <span id="displayRate" class="font-bold text-cyan-400">Memuat data...</span>
+            <!-- Tool 2: Risk Trading -->
+            <div id="tool-trading" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
+                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+                    <span class="text-cyan-400">📈</span> Risk-Reward Trading Calculator
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Modal / Balance ($)</label>
+                        <input type="number" id="modalTrading" placeholder="1000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Toleransi Risiko (%)</label>
+                        <input type="number" id="persenResiko" placeholder="1" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Stop Loss (Pips/%)</label>
+                        <input type="number" id="jarakSL" placeholder="20" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                    </div>
+                </div>
+                <button onclick="hitungTrading()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-extrabold rounded-xl glow-cyan transition-all duration-200 active:scale-[0.98]">
+                    HITUNG UKURAN POSISI
+                </button>
+                <div id="hasilTrading" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl space-y-2 text-sm animate-tab-content">
+                    <p class="flex justify-between"><span>Max Risk ($):</span> <span id="maxRiskUsd" class="font-bold text-white"></span></p>
+                    <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
+                        <span class="text-white">Rekomendasi Position Size:</span> <span id="posSize" class="text-lg text-cyan-400 font-extrabold"></span>
+                    </div>
+                </div>
             </div>
 
-            <div id="hasilCrypto" class="p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Hasil Konversi Ke IDR:</p>
-                <p id="totalIdr" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Rp 0</p>
-            </div>
-        </div>
+            <!-- Tool 3: Convert USD/USDT ke IDR -->
+            <div id="tool-crypto" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
+                <h2 class="text-lg font-bold mb-1 text-white flex items-center gap-2">
+                    <span class="text-emerald-400">🔀</span> Convert USD / USDT ke Rupiah
+                </h2>
+                <p class="text-xs text-slate-400 mb-5">Kurs otomatis tersinkronisasi dari pasar keuangan global.</p>
+                
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah USD / USDT ($)</label>
+                    <input type="number" id="jumlahUsdt" placeholder="Contoh: 5" class="w-full p-4 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white text-xl font-bold transition" oninput="hitungCrypto()">
+                </div>
 
-        <!-- Tool 4: Hitung Umur -->
-        <div id="tool-umur" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden">
-            <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                <span class="text-cyan-400">🎂</span> Age Calculator
-            </h2>
-            <div class="mb-5">
-                <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Pilih Tanggal Lahir</label>
-                <input type="date" id="tglLahir" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
-            </div>
-            <button onclick="hitungUmur()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-black font-extrabold rounded-xl glow-cyan transition-all">
-                HITUNG USIA
-            </button>
-            <div id="hasilUmur" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl text-center">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Umur Anda Saat Ini:</p>
-                <p id="detailUmur" class="text-lg font-bold text-cyan-300"></p>
-            </div>
-        </div>
+                <div class="p-3.5 bg-[#080c14] border border-slate-800 rounded-xl text-xs text-slate-400 flex justify-between items-center mb-5">
+                    <span>Rate Kurs Live:</span>
+                    <span id="displayRate" class="font-bold text-cyan-400">Memuat data...</span>
+                </div>
 
-        <!-- Tool 5: Kalkulator Zakat -->
-        <div id="tool-zakat" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden">
-            <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                <span class="text-emerald-400">🌙</span> Kalkulator Zakat (2.5%)
-            </h2>
-            <div class="mb-5">
-                <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Total Harta / Pendapatan (Rp)</label>
-                <input type="number" id="jumlahHarta" placeholder="Contoh: 10000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                <div id="hasilCrypto" class="p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Hasil Konversi Ke IDR:</p>
+                    <p id="totalIdr" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Rp 0</p>
+                </div>
             </div>
-            <button onclick="hitungZakat()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold rounded-xl glow-emerald transition-all">
-                HITUNG ZAKAT
-            </button>
-            <div id="hasilZakat" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center">
-                <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Kewajiban Zakat (2.5%):</p>
-                <p id="totalZakat" class="text-2xl font-extrabold text-emerald-400"></p>
+
+            <!-- Tool 4: Hitung Umur -->
+            <div id="tool-umur" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
+                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+                    <span class="text-cyan-400">🎂</span> Age Calculator
+                </h2>
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Pilih Tanggal Lahir</label>
+                    <input type="date" id="tglLahir" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                </div>
+                <button onclick="hitungUmur()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-black font-extrabold rounded-xl glow-cyan transition-all duration-200 active:scale-[0.98]">
+                    HITUNG USIA
+                </button>
+                <div id="hasilUmur" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl text-center animate-tab-content">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Umur Anda Saat Ini:</p>
+                    <p id="detailUmur" class="text-lg font-bold text-cyan-300"></p>
+                </div>
             </div>
+
+            <!-- Tool 5: Kalkulator Zakat -->
+            <div id="tool-zakat" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
+                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
+                    <span class="text-emerald-400">🌙</span> Kalkulator Zakat (2.5%)
+                </h2>
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Total Harta / Pendapatan (Rp)</label>
+                    <input type="number" id="jumlahHarta" placeholder="Contoh: 10000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                </div>
+                <button onclick="hitungZakat()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold rounded-xl glow-emerald transition-all duration-200 active:scale-[0.98]">
+                    HITUNG ZAKAT
+                </button>
+                <div id="hasilZakat" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center animate-tab-content">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Kewajiban Zakat (2.5%):</p>
+                    <p id="totalZakat" class="text-2xl font-extrabold text-emerald-400"></p>
+                </div>
+            </div>
+
         </div>
 
         <!-- Slot Iklan Tengah -->
@@ -220,7 +247,7 @@
 
     <!-- Modal Pop-Up -->
     <div id="infoModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="cyber-card rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-cyan-500/50 max-h-[80vh] overflow-y-auto">
+        <div class="cyber-card rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-cyan-500/50 max-h-[80vh] overflow-y-auto animate-tab-content">
             <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white font-bold text-xl">&times;</button>
             <div id="modalContent"></div>
         </div>
@@ -249,12 +276,19 @@
 
         function switchTab(selected) {
             tabs.forEach(tab => {
-                document.getElementById(`tool-${tab}`).classList.add('hidden');
-                document.getElementById(`tab-${tab}`).className = "p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                const elem = document.getElementById(`tool-${tab}`);
+                elem.classList.add('hidden');
+                elem.classList.remove('animate-tab-content');
+                document.getElementById(`tab-${tab}`).className = "p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2";
             });
 
-            document.getElementById(`tool-${selected}`).classList.remove('hidden');
-            document.getElementById(`tab-${selected}`).className = "cyber-tab-active p-3 rounded-xl border font-bold text-xs transition-all flex items-center justify-center gap-2";
+            const activeElem = document.getElementById(`tool-${selected}`);
+            activeElem.classList.remove('hidden');
+            // Trigger reflow for animation restart
+            void activeElem.offsetWidth;
+            activeElem.classList.add('animate-tab-content');
+
+            document.getElementById(`tab-${selected}`).className = "cyber-tab-active p-3 rounded-xl border font-bold text-xs transition-all active:scale-95 flex items-center justify-center gap-2";
         }
 
         function hitungGaji() {
@@ -265,7 +299,9 @@
             document.getElementById('upahPerJam').innerText = "Rp " + Math.round(perJam).toLocaleString('id-ID');
             document.getElementById('totalLembur').innerText = "Rp " + Math.round(totalLembur).toLocaleString('id-ID');
             document.getElementById('totalGajiBersih').innerText = "Rp " + Math.round(gaji + totalLembur).toLocaleString('id-ID');
-            document.getElementById('hasilGaji').classList.remove('hidden');
+            
+            const hasil = document.getElementById('hasilGaji');
+            hasil.classList.remove('hidden');
         }
 
         function hitungTrading() {
@@ -276,7 +312,9 @@
             const posSize = sl > 0 ? (maxRisk / sl) : 0;
             document.getElementById('maxRiskUsd').innerText = "$ " + maxRisk.toFixed(2);
             document.getElementById('posSize').innerText = posSize.toFixed(2) + " Unit / Lot";
-            document.getElementById('hasilTrading').classList.remove('hidden');
+            
+            const hasil = document.getElementById('hasilTrading');
+            hasil.classList.remove('hidden');
         }
 
         function hitungCrypto() {
@@ -303,14 +341,16 @@
             }
 
             document.getElementById('detailUmur').innerText = `${thn} Tahun, ${bln} Bulan, ${hari} Hari`;
-            document.getElementById('hasilUmur').classList.remove('hidden');
+            const hasil = document.getElementById('hasilUmur');
+            hasil.classList.remove('hidden');
         }
 
         function hitungZakat() {
             const harta = parseFloat(document.getElementById('jumlahHarta').value) || 0;
             const zakat = harta * 0.025;
             document.getElementById('totalZakat').innerText = "Rp " + Math.round(zakat).toLocaleString('id-ID');
-            document.getElementById('hasilZakat').classList.remove('hidden');
+            const hasil = document.getElementById('hasilZakat');
+            hasil.classList.remove('hidden');
         }
 
         function openModal(type) {
