@@ -15,13 +15,12 @@
             color: #cbd5e1;
         }
 
-        /* Keyframes */
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); }
             50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.7); }
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes marquee {
@@ -29,35 +28,22 @@
             100% { transform: translateX(-100%); }
         }
 
-        .animate-logo {
-            animation: pulseGlow 3s infinite ease-in-out;
-        }
-        .animate-tab-content {
-            animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .animate-logo { animation: pulseGlow 3s infinite ease-in-out; }
+        .animate-tab-content { animation: fadeInUp 0.3s ease-out forwards; }
         .animate-marquee {
             display: inline-block;
             white-space: nowrap;
-            animation: marquee 25s linear infinite;
+            animation: marquee 28s linear infinite;
         }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
+        .animate-marquee:hover { animation-play-state: paused; }
 
-        .glow-cyan {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
-        }
-        .glow-emerald {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
-        }
+        .glow-cyan { box-shadow: 0 0 20px rgba(6, 182, 212, 0.35); }
+        .glow-emerald { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
         .cyber-card {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(51, 65, 85, 0.6);
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .cyber-card:hover {
-            border-color: rgba(6, 182, 212, 0.4);
+            transition: all 0.2s ease;
         }
         .cyber-tab-active {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(16, 185, 129, 0.25));
@@ -73,20 +59,20 @@
     <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center border border-blue-400/40 animate-logo transition-all">
+                <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center border border-blue-400/40 animate-logo">
                     <span class="text-white font-black text-xl leading-none">F</span>
                 </div>
                 <h1 class="text-xl font-extrabold tracking-wider text-white">Fin<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Desk</span></h1>
             </div>
             <span class="text-[11px] font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full uppercase tracking-widest glow-cyan">
-                Web3 Tools
+                Web3 Financial Suite
             </span>
         </div>
 
-        <!-- Live Crypto Ticker Bar -->
+        <!-- Live Crypto & Market Rate Ticker -->
         <div class="bg-[#080c14] border-t border-b border-slate-800 text-[11px] py-1.5 overflow-hidden text-slate-400">
             <div class="animate-marquee font-mono" id="cryptoTicker">
-                ⏳ Memuat harga crypto live (BTC, ETH, SOL, USDT)...
+                ⏳ Synchronizing Market Rates via CoinMarketCap API...
             </div>
         </div>
     </header>
@@ -98,78 +84,92 @@
             [ Slot Iklan AdSense Header / Top Banner (728x90) ]
         </div>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs (SVG Icons) -->
         <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
             <button onclick="switchTab('gaji')" id="tab-gaji" class="cyber-tab-active p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span>💰</span> Gaji & Lembur
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Gaji & Lembur
             </button>
             <button onclick="switchTab('trading')" id="tab-trading" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span>📈</span> Risk Trading
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                Risk Trading
             </button>
             <button onclick="switchTab('crypto')" id="tab-crypto" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span>🔀</span> USD/USDT
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                USD / USDT
             </button>
             <button onclick="switchTab('umur')" id="tab-umur" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span>🎂</span> Hitung Umur
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Hitung Umur
             </button>
             <button onclick="switchTab('zakat')" id="tab-zakat" class="p-3 rounded-xl border border-slate-700/80 font-bold text-xs text-slate-400 hover:text-white transition-all active:scale-95 flex items-center justify-center gap-2">
-                <span>🌙</span> Hitung Zakat
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                Hitung Zakat
             </button>
         </div>
 
-        <!-- Container Wrap -->
+        <!-- Container Tools -->
         <div id="tool-container">
 
             <!-- Tool 1: Gaji & Lembur -->
             <div id="tool-gaji" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl animate-tab-content">
-                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                    <span class="text-emerald-400">💰</span> Hitung Gaji Bersih & Lembur
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-emerald-400">💵</span> Hitung Gaji Bersih & Lembur
+                    </h2>
+                    <button onclick="resetForm('gaji')" class="text-xs text-slate-400 hover:text-rose-400 underline transition">Reset</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Gaji Pokok Bulanan (Rp)</label>
-                        <input type="number" id="gajiPokok" placeholder="Contoh: 5000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
+                        <input type="number" id="gajiPokok" min="1" placeholder="Contoh: 5000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah Jam Lembur</label>
-                        <input type="number" id="jamLembur" placeholder="Contoh: 10" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none text-white transition">
+                        <input type="number" id="jamLembur" min="0" placeholder="Contoh: 10" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                     </div>
                 </div>
-                <button onclick="hitungGaji()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold rounded-xl glow-emerald transition-all duration-200 active:scale-[0.98]">
+                <div id="err-gaji" class="hidden mb-4 p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xs rounded-xl"></div>
+                <button onclick="hitungGaji()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold rounded-xl glow-emerald transition-all active:scale-[0.98]">
                     HITUNG SEKARANG
                 </button>
-                <div id="hasilGaji" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl space-y-2 text-sm animate-tab-content">
-                    <p class="flex justify-between"><span>Upah Lembur / Jam:</span> <span id="upahPerJam" class="font-bold text-white"></span></p>
+                <div id="hasilGaji" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl space-y-2 text-sm">
+                    <p class="flex justify-between"><span>Upah Lembur / Jam (1/173):</span> <span id="upahPerJam" class="font-bold text-white"></span></p>
                     <p class="flex justify-between"><span>Total Uang Lembur:</span> <span id="totalLembur" class="font-bold text-white"></span></p>
                     <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
                         <span class="text-white">Estimasi Total Pendapatan:</span> <span id="totalGajiBersih" class="text-lg text-emerald-400 font-extrabold"></span>
                     </div>
+                    <p class="text-[10px] text-slate-500 pt-1">*Rumus perhitungan upah lembur per jam sesuai Kepmenakertrans: 1/173 x Gaji Pokok Bulanan.</p>
                 </div>
             </div>
 
             <!-- Tool 2: Risk Trading -->
             <div id="tool-trading" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
-                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                    <span class="text-cyan-400">📈</span> Risk-Reward Trading Calculator
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-cyan-400">📊</span> Risk-Reward Trading Calculator
+                    </h2>
+                    <button onclick="resetForm('trading')" class="text-xs text-slate-400 hover:text-rose-400 underline transition">Reset</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                         <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Modal / Balance ($)</label>
-                        <input type="number" id="modalTrading" placeholder="1000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                        <input type="number" id="modalTrading" min="1" placeholder="1000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Toleransi Risiko (%)</label>
-                        <input type="number" id="persenResiko" placeholder="1" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Risiko (%) [Max 100%]</label>
+                        <input type="number" id="persenResiko" min="0.1" max="100" placeholder="1" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Stop Loss (Pips/%)</label>
-                        <input type="number" id="jarakSL" placeholder="20" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Stop Loss (Pips / %)</label>
+                        <input type="number" id="jarakSL" min="0.0001" placeholder="20" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                     </div>
                 </div>
-                <button onclick="hitungTrading()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-extrabold rounded-xl glow-cyan transition-all duration-200 active:scale-[0.98]">
+                <div id="err-trading" class="hidden mb-4 p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xs rounded-xl"></div>
+                <button onclick="hitungTrading()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-extrabold rounded-xl glow-cyan transition-all active:scale-[0.98]">
                     HITUNG UKURAN POSISI
                 </button>
-                <div id="hasilTrading" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl space-y-2 text-sm animate-tab-content">
+                <div id="hasilTrading" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl space-y-2 text-sm">
                     <p class="flex justify-between"><span>Max Risk ($):</span> <span id="maxRiskUsd" class="font-bold text-white"></span></p>
                     <div class="border-t border-slate-700 pt-3 flex justify-between font-bold">
                         <span class="text-white">Rekomendasi Position Size:</span> <span id="posSize" class="text-lg text-cyan-400 font-extrabold"></span>
@@ -177,27 +177,35 @@
                 </div>
             </div>
 
-            <!-- Tool 3: Convert USD/USDT ke IDR (Bolak-Balik) -->
+            <!-- Tool 3: Convert USD/USDT ke IDR -->
             <div id="tool-crypto" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
                 <div class="flex justify-between items-center mb-1">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
                         <span class="text-emerald-400">🔀</span> <span id="convTitle">USD / USDT ➔ IDR</span>
                     </h2>
-                    <button onclick="toggleDirection()" class="px-3 py-1.5 bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 rounded-lg text-xs font-bold hover:bg-cyan-900 transition flex items-center gap-1">
-                        <span>🔄</span> Tukar Arah
+                    <button onclick="toggleDirection()" class="px-3 py-1.5 bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 rounded-lg text-xs font-bold hover:bg-cyan-900 transition">
+                        🔄 Tukar Arah
                     </button>
                 </div>
-                <p class="text-xs text-slate-400 mb-5">Kurs otomatis tersinkronisasi dari pasar keuangan global.</p>
+                <p class="text-xs text-slate-400 mb-4">Terintegrasi CoinMarketCap API Pro Live Rate.</p>
                 
-                <div class="mb-5">
-                    <label id="inputLabel" class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah USD / USDT ($)</label>
-                    <input type="number" id="jumlahUsdt" placeholder="Contoh: 5" class="w-full p-4 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white text-xl font-bold transition" oninput="hitungCrypto()">
+                <div class="mb-4">
+                    <label id="inputLabel" class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Masukkan Jumlah USD / USDT ($)</label>
+                    <input type="number" id="jumlahUsdt" min="0" placeholder="Contoh: 5" class="w-full p-4 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white text-xl font-bold transition" oninput="hitungCrypto()">
                 </div>
 
-                <div class="p-3.5 bg-[#080c14] border border-slate-800 rounded-xl text-xs text-slate-400 flex justify-between items-center mb-5">
-                    <span>Rate Kurs Live:</span>
-                    <span id="displayRate" class="font-bold text-cyan-400">Memuat data...</span>
+                <div class="p-3.5 bg-[#080c14] border border-slate-800 rounded-xl text-xs text-slate-400 flex flex-col gap-1 mb-4">
+                    <div class="flex justify-between items-center">
+                        <span>Rate Live (USD/IDR Pasar):</span>
+                        <span id="displayRate" class="font-bold text-cyan-400">Sinkronisasi CMC API...</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-slate-500 border-t border-slate-800/80 pt-1">
+                        <span>Sumber Data: CoinMarketCap API</span>
+                        <span id="lastUpdated">Last Update: Just Now</span>
+                    </div>
                 </div>
+
+                <div id="err-crypto" class="hidden mb-4 p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xs rounded-xl"></div>
 
                 <div id="hasilCrypto" class="p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center">
                     <p id="hasilLabel" class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Hasil Konversi Ke IDR:</p>
@@ -207,17 +215,21 @@
 
             <!-- Tool 4: Hitung Umur -->
             <div id="tool-umur" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
-                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                    <span class="text-cyan-400">🎂</span> Age Calculator
-                </h2>
-                <div class="mb-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-cyan-400">🎂</span> Age Calculator Presisi
+                    </h2>
+                    <button onclick="resetForm('umur')" class="text-xs text-slate-400 hover:text-rose-400 underline transition">Reset</button>
+                </div>
+                <div class="mb-4">
                     <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Pilih Tanggal Lahir</label>
                     <input type="date" id="tglLahir" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
                 </div>
-                <button onclick="hitungUmur()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-black font-extrabold rounded-xl glow-cyan transition-all duration-200 active:scale-[0.98]">
-                    HITUNG USIA
+                <div id="err-umur" class="hidden mb-4 p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xs rounded-xl"></div>
+                <button onclick="hitungUmur()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-black font-extrabold rounded-xl glow-cyan transition-all active:scale-[0.98]">
+                    HITUNG USIA SEKARANG
                 </button>
-                <div id="hasilUmur" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl text-center animate-tab-content">
+                <div id="hasilUmur" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-cyan-500/40 rounded-xl text-center">
                     <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Umur Anda Saat Ini:</p>
                     <p id="detailUmur" class="text-lg font-bold text-cyan-300"></p>
                 </div>
@@ -225,19 +237,25 @@
 
             <!-- Tool 5: Kalkulator Zakat -->
             <div id="tool-zakat" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
-                <h2 class="text-lg font-bold mb-4 text-white flex items-center gap-2">
-                    <span class="text-emerald-400">🌙</span> Kalkulator Zakat (2.5%)
-                </h2>
-                <div class="mb-5">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Total Harta / Pendapatan (Rp)</label>
-                    <input type="number" id="jumlahHarta" placeholder="Contoh: 10000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-emerald-400">🌙</span> Kalkulator Zakat Penghasilan & Maal (2.5%)
+                    </h2>
+                    <button onclick="resetForm('zakat')" class="text-xs text-slate-400 hover:text-rose-400 underline transition">Reset</button>
                 </div>
-                <button onclick="hitungZakat()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold rounded-xl glow-emerald transition-all duration-200 active:scale-[0.98]">
-                    HITUNG ZAKAT
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Total Harta / Pendapatan (Rp)</label>
+                    <input type="number" id="jumlahHarta" min="1" placeholder="Contoh: 10000000" class="w-full p-3.5 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white transition">
+                </div>
+                <div id="err-zakat" class="hidden mb-4 p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 text-xs rounded-xl"></div>
+                <button onclick="hitungZakat()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-extrabold rounded-xl glow-emerald transition-all active:scale-[0.98]">
+                    HITUNG ZEKA / KEWAJIBAN ZAKAT
                 </button>
-                <div id="hasilZakat" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center animate-tab-content">
-                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Kewajiban Zakat (2.5%):</p>
+                <div id="hasilZakat" class="mt-6 hidden p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center space-y-2">
+                    <div id="nisabStatus" class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-2"></div>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold">Estimasi Zakat (2.5%):</p>
                     <p id="totalZakat" class="text-2xl font-extrabold text-emerald-400"></p>
+                    <p class="text-[10px] text-slate-500 pt-1">*Nisab zakat maal/penghasilan setara 85 gram emas per tahun (~Rp 85.000.000 / Rp 7.083.000 per bulan).</p>
                 </div>
             </div>
 
@@ -276,56 +294,106 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Logic & Validation Engine -->
     <script>
+        const CMC_API_KEY = "178e15f3d3a34bd8b3d88e05c37206f5";
         const tabs = ['gaji', 'trading', 'crypto', 'umur', 'zakat'];
-        let liveUsdRate = 16000;
+        let liveUsdRate = 16250; 
         let isUsdToIdr = true;
 
-        // Fetch Live Exchange Rate
-        async function fetchLiveRate() {
-            try {
-                const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-                const data = await res.json();
-                if (data && data.rates && data.rates.IDR) {
-                    liveUsdRate = data.rates.IDR;
-                    document.getElementById('displayRate').innerText = "1 USD = Rp " + Math.round(liveUsdRate).toLocaleString('id-ID');
-                    hitungCrypto();
-                }
-            } catch (err) {
-                document.getElementById('displayRate').innerText = "1 USD = Rp " + Math.round(liveUsdRate).toLocaleString('id-ID') + " (Offline)";
+        // Currency Formatter
+        function formatRupiah(val) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(val);
+        }
+        function formatUSD(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(val);
+        }
+
+        // Show/Hide Error Alert
+        function showError(id, msg) {
+            const errBox = document.getElementById(`err-${id}`);
+            if (msg) {
+                errBox.innerText = msg;
+                errBox.classList.remove('hidden');
+            } else {
+                errBox.classList.add('hidden');
             }
         }
 
-        // Fetch Live Crypto Prices (CoinGecko API)
-        async function fetchCryptoPrices() {
+        // Reset Form
+        function resetForm(id) {
+            showError(id, null);
+            if (id === 'gaji') {
+                document.getElementById('gajiPokok').value = '';
+                document.getElementById('jamLembur').value = '';
+                document.getElementById('hasilGaji').classList.add('hidden');
+            } else if (id === 'trading') {
+                document.getElementById('modalTrading').value = '';
+                document.getElementById('persenResiko').value = '';
+                document.getElementById('jarakSL').value = '';
+                document.getElementById('hasilTrading').classList.add('hidden');
+            } else if (id === 'umur') {
+                document.getElementById('tglLahir').value = '';
+                document.getElementById('hasilUmur').classList.add('hidden');
+            } else if (id === 'zakat') {
+                document.getElementById('jumlahHarta').value = '';
+                document.getElementById('hasilZakat').classList.add('hidden');
+            }
+        }
+
+        // Fetch Data dari CMC API & Fallback Engine
+        async function fetchCMCData() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tether&vs_currencies=usd');
+                // Primary CMC Fetch via CORS Proxy
+                const proxyUrl = "https://corsproxy.io/?";
+                const targetUrl = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=BTC,ETH,SOL,USDT&convert=USD";
+                
+                const res = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
+                    headers: { 'X-CMC_PRO_API_KEY': CMC_API_KEY }
+                });
+                
                 const data = await res.json();
-                if (data) {
-                    const btc = data.bitcoin ? "$" + data.bitcoin.usd.toLocaleString() : "-";
-                    const eth = data.ethereum ? "$" + data.ethereum.usd.toLocaleString() : "-";
-                    const sol = data.solana ? "$" + data.solana.usd.toLocaleString() : "-";
-                    const usdt = data.tether ? "$" + data.tether.usd : "-";
+                if (data && data.data) {
+                    const btc = data.data.BTC ? formatUSD(data.data.BTC.quote.USD.price) : "-";
+                    const eth = data.data.ETH ? formatUSD(data.data.ETH.quote.USD.price) : "-";
+                    const sol = data.data.SOL ? formatUSD(data.data.SOL.quote.USD.price) : "-";
+                    const usdt = data.data.USDT ? formatUSD(data.data.USDT.quote.USD.price) : "-";
                     
                     document.getElementById('cryptoTicker').innerHTML = 
                         `🚀 <span class="text-cyan-400 font-bold">BTC:</span> ${btc} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
                         `💎 <span class="text-purple-400 font-bold">ETH:</span> ${eth} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
                         `⚡ <span class="text-emerald-400 font-bold">SOL:</span> ${sol} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
                         `💵 <span class="text-teal-400 font-bold">USDT:</span> ${usdt} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
-                        `🔀 <span class="text-cyan-300 font-bold">USD/IDR:</span> Rp ${Math.round(liveUsdRate).toLocaleString('id-ID')}`;
+                        `🔀 <span class="text-cyan-300 font-bold">USD/IDR Live:</span> ${formatRupiah(liveUsdRate)}`;
                 }
             } catch (err) {
-                document.getElementById('cryptoTicker').innerText = "⚡ FinDesk Web3 Tools - Real-Time Financial Utility";
+                // Fallback Ticker jika CORS Proxy sibuk
+                fetchFallbackRates();
             }
         }
 
-        fetchLiveRate();
-        fetchCryptoPrices();
-        setInterval(fetchCryptoPrices, 60000); // Update crypto tiap 1 menit
+        async function fetchFallbackRates() {
+            try {
+                const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await res.json();
+                if (data && data.rates && data.rates.IDR) {
+                    liveUsdRate = data.rates.IDR;
+                    document.getElementById('displayRate').innerText = formatRupiah(liveUsdRate);
+                    const now = new Date();
+                    document.getElementById('lastUpdated').innerText = "Last Update: " + now.toLocaleTimeString('id-ID');
+                    document.getElementById('cryptoTicker').innerText = `⚡ FinDesk Web3 - Live USD Rate: ${formatRupiah(liveUsdRate)} | CoinMarketCap Sync Active`;
+                }
+            } catch (e) {
+                document.getElementById('displayRate').innerText = formatRupiah(liveUsdRate) + " (Offline)";
+            }
+        }
+
+        fetchCMCData();
+        fetchFallbackRates();
 
         function toggleDirection() {
             isUsdToIdr = !isUsdToIdr;
+            showError('crypto', null);
             const inputLabel = document.getElementById('inputLabel');
             const hasilLabel = document.getElementById('hasilLabel');
             const convTitle = document.getElementById('convTitle');
@@ -362,43 +430,105 @@
             document.getElementById(`tab-${selected}`).className = "cyber-tab-active p-3 rounded-xl border font-bold text-xs transition-all active:scale-95 flex items-center justify-center gap-2";
         }
 
+        // VALIDASI & COMPUTATION LOGIC
+
         function hitungGaji() {
-            const gaji = parseFloat(document.getElementById('gajiPokok').value) || 0;
-            const jam = parseFloat(document.getElementById('jamLembur').value) || 0;
-            const perJam = gaji / 173;
-            const totalLembur = perJam * jam;
-            document.getElementById('upahPerJam').innerText = "Rp " + Math.round(perJam).toLocaleString('id-ID');
-            document.getElementById('totalLembur').innerText = "Rp " + Math.round(totalLembur).toLocaleString('id-ID');
-            document.getElementById('totalGajiBersih').innerText = "Rp " + Math.round(gaji + totalLembur).toLocaleString('id-ID');
+            showError('gaji', null);
+            const gajiStr = document.getElementById('gajiPokok').value;
+            const jamStr = document.getElementById('jamLembur').value;
+
+            if (!gajiStr || parseFloat(gajiStr) <= 0) {
+                showError('gaji', '⚠️ Silakan masukkan Gaji Pokok Bulanan yang valid (harus lebih dari 0).');
+                return;
+            }
+            if (!jamStr || parseFloat(jamStr) < 0) {
+                showError('gaji', '⚠️ Jumlah jam lembur tidak boleh kosong atau bernilai negatif.');
+                return;
+            }
+
+            const gaji = parseFloat(gajiStr);
+            const jam = parseFloat(jamStr);
+
+            const perJam = Math.round(gaji / 173);
+            const totalLembur = Math.round(perJam * jam);
+            const totalGaji = Math.round(gaji + totalLembur);
+
+            document.getElementById('upahPerJam').innerText = formatRupiah(perJam);
+            document.getElementById('totalLembur').innerText = formatRupiah(totalLembur);
+            document.getElementById('totalGajiBersih').innerText = formatRupiah(totalGaji);
             document.getElementById('hasilGaji').classList.remove('hidden');
         }
 
         function hitungTrading() {
-            const modal = parseFloat(document.getElementById('modalTrading').value) || 0;
-            const persen = parseFloat(document.getElementById('persenResiko').value) || 0;
-            const sl = parseFloat(document.getElementById('jarakSL').value) || 0;
+            showError('trading', null);
+            const modalStr = document.getElementById('modalTrading').value;
+            const persenStr = document.getElementById('persenResiko').value;
+            const slStr = document.getElementById('jarakSL').value;
+
+            if (!modalStr || parseFloat(modalStr) <= 0) {
+                showError('trading', '⚠️ Masukkan Modal / Balance yang valid (lebih besar dari 0).');
+                return;
+            }
+            if (!persenStr || parseFloat(persenStr) <= 0 || parseFloat(persenStr) > 100) {
+                showError('trading', '⚠️ Toleransi Risiko harus di antara 0.1% hingga 100%.');
+                return;
+            }
+            if (!slStr || parseFloat(slStr) <= 0) {
+                showError('trading', '⚠️ Jarak Stop Loss harus lebih besar dari 0 (tidak boleh 0 untuk menghindari pembagian nol).');
+                return;
+            }
+
+            const modal = parseFloat(modalStr);
+            const persen = parseFloat(persenStr);
+            const sl = parseFloat(slStr);
+
             const maxRisk = modal * (persen / 100);
-            const posSize = sl > 0 ? (maxRisk / sl) : 0;
-            document.getElementById('maxRiskUsd').innerText = "$ " + maxRisk.toFixed(2);
-            document.getElementById('posSize').innerText = posSize.toFixed(2) + " Unit / Lot";
+            const posSize = maxRisk / sl;
+
+            document.getElementById('maxRiskUsd').innerText = formatUSD(maxRisk);
+            document.getElementById('posSize').innerText = posSize.toFixed(4) + " Unit / Lot";
             document.getElementById('hasilTrading').classList.remove('hidden');
         }
 
         function hitungCrypto() {
-            const inputVal = parseFloat(document.getElementById('jumlahUsdt').value) || 0;
+            showError('crypto', null);
+            const inputValStr = document.getElementById('jumlahUsdt').value;
+            if (!inputValStr) {
+                document.getElementById('totalIdr').innerText = isUsdToIdr ? "Rp 0" : "$ 0.00";
+                return;
+            }
+
+            const inputVal = parseFloat(inputValStr);
+            if (inputVal < 0) {
+                showError('crypto', '⚠️ Nominal konversi tidak boleh negatif.');
+                return;
+            }
+
             if (isUsdToIdr) {
-                const total = inputVal * liveUsdRate;
-                document.getElementById('totalIdr').innerText = "Rp " + Math.round(total).toLocaleString('id-ID');
+                const total = Math.round(inputVal * liveUsdRate);
+                document.getElementById('totalIdr').innerText = formatRupiah(total);
             } else {
                 const totalUsd = liveUsdRate > 0 ? (inputVal / liveUsdRate) : 0;
-                document.getElementById('totalIdr').innerText = "$ " + totalUsd.toFixed(2);
+                document.getElementById('totalIdr').innerText = formatUSD(totalUsd);
             }
         }
 
         function hitungUmur() {
-            const tgl = new Date(document.getElementById('tglLahir').value);
-            if (isNaN(tgl)) return;
+            showError('umur', null);
+            const tglVal = document.getElementById('tglLahir').value;
+            if (!tglVal) {
+                showError('umur', '⚠️ Pilih tanggal lahir Anda terlebih dahulu.');
+                return;
+            }
+
+            const tgl = new Date(tglVal);
             const now = new Date();
+
+            if (tgl > now) {
+                showError('umur', '⚠️ Tanggal lahir tidak boleh berada di masa depan.');
+                return;
+            }
+
             let thn = now.getFullYear() - tgl.getFullYear();
             let bln = now.getMonth() - tgl.getMonth();
             let hari = now.getDate() - tgl.getDate();
@@ -417,9 +547,29 @@
         }
 
         function hitungZakat() {
-            const harta = parseFloat(document.getElementById('jumlahHarta').value) || 0;
-            const zakat = harta * 0.025;
-            document.getElementById('totalZakat').innerText = "Rp " + Math.round(zakat).toLocaleString('id-ID');
+            showError('zakat', null);
+            const hartaStr = document.getElementById('jumlahHarta').value;
+
+            if (!hartaStr || parseFloat(hartaStr) <= 0) {
+                showError('zakat', '⚠️ Masukkan jumlah harta/pendapatan bernilai positif.');
+                return;
+            }
+
+            const harta = parseFloat(hartaStr);
+            const zakat = Math.round(harta * 0.025);
+
+            const nisabStatus = document.getElementById('nisabStatus');
+            const nisabBulanan = 7083000; // Nisab standar per bulan
+
+            if (harta >= nisabBulanan) {
+                nisabStatus.className = "inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+                nisabStatus.innerText = "✅ Harta Mencapai Nisab (Wajib Zakat)";
+            } else {
+                nisabStatus.className = "inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 bg-amber-500/20 text-amber-300 border border-amber-500/40";
+                nisabStatus.innerText = "ℹ️ Belum Mencapai Nisab (Dianjurkan Infak/Sedekah)";
+            }
+
+            document.getElementById('totalZakat').innerText = formatRupiah(zakat);
             document.getElementById('hasilZakat').classList.remove('hidden');
         }
 
