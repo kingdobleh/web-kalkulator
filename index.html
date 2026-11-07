@@ -15,7 +15,7 @@
             color: #cbd5e1;
         }
 
-        /* Animation Keyframes */
+        /* Keyframes */
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); }
             50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.7); }
@@ -24,12 +24,24 @@
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
 
         .animate-logo {
             animation: pulseGlow 3s infinite ease-in-out;
         }
         .animate-tab-content {
             animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
         }
 
         .glow-cyan {
@@ -61,7 +73,6 @@
     <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 z-40">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <!-- Logo F Biru Animasi Glow -->
                 <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center border border-blue-400/40 animate-logo transition-all">
                     <span class="text-white font-black text-xl leading-none">F</span>
                 </div>
@@ -70,6 +81,13 @@
             <span class="text-[11px] font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full uppercase tracking-widest glow-cyan">
                 Web3 Tools
             </span>
+        </div>
+
+        <!-- Live Crypto Ticker Bar -->
+        <div class="bg-[#080c14] border-t border-b border-slate-800 text-[11px] py-1.5 overflow-hidden text-slate-400">
+            <div class="animate-marquee font-mono" id="cryptoTicker">
+                ⏳ Memuat harga crypto live (BTC, ETH, SOL, USDT)...
+            </div>
         </div>
     </header>
 
@@ -99,7 +117,7 @@
             </button>
         </div>
 
-        <!-- Container Animation Wrap -->
+        <!-- Container Wrap -->
         <div id="tool-container">
 
             <!-- Tool 1: Gaji & Lembur -->
@@ -159,15 +177,20 @@
                 </div>
             </div>
 
-            <!-- Tool 3: Convert USD/USDT ke IDR -->
+            <!-- Tool 3: Convert USD/USDT ke IDR (Bolak-Balik) -->
             <div id="tool-crypto" class="cyber-card p-6 rounded-2xl border border-slate-700/60 shadow-xl hidden animate-tab-content">
-                <h2 class="text-lg font-bold mb-1 text-white flex items-center gap-2">
-                    <span class="text-emerald-400">🔀</span> Convert USD / USDT ke Rupiah
-                </h2>
+                <div class="flex justify-between items-center mb-1">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="text-emerald-400">🔀</span> <span id="convTitle">USD / USDT ➔ IDR</span>
+                    </h2>
+                    <button onclick="toggleDirection()" class="px-3 py-1.5 bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 rounded-lg text-xs font-bold hover:bg-cyan-900 transition flex items-center gap-1">
+                        <span>🔄</span> Tukar Arah
+                    </button>
+                </div>
                 <p class="text-xs text-slate-400 mb-5">Kurs otomatis tersinkronisasi dari pasar keuangan global.</p>
                 
                 <div class="mb-5">
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah USD / USDT ($)</label>
+                    <label id="inputLabel" class="block text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-2">Jumlah USD / USDT ($)</label>
                     <input type="number" id="jumlahUsdt" placeholder="Contoh: 5" class="w-full p-4 bg-[#080c14] border border-slate-700 rounded-xl focus:border-cyan-400 outline-none text-white text-xl font-bold transition" oninput="hitungCrypto()">
                 </div>
 
@@ -177,7 +200,7 @@
                 </div>
 
                 <div id="hasilCrypto" class="p-5 bg-[#080c14]/90 border border-emerald-500/40 rounded-xl text-center">
-                    <p class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Hasil Konversi Ke IDR:</p>
+                    <p id="hasilLabel" class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Hasil Konversi Ke IDR:</p>
                     <p id="totalIdr" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Rp 0</p>
                 </div>
             </div>
@@ -257,7 +280,9 @@
     <script>
         const tabs = ['gaji', 'trading', 'crypto', 'umur', 'zakat'];
         let liveUsdRate = 16000;
+        let isUsdToIdr = true;
 
+        // Fetch Live Exchange Rate
         async function fetchLiveRate() {
             try {
                 const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
@@ -272,7 +297,54 @@
             }
         }
 
+        // Fetch Live Crypto Prices (CoinGecko API)
+        async function fetchCryptoPrices() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tether&vs_currencies=usd');
+                const data = await res.json();
+                if (data) {
+                    const btc = data.bitcoin ? "$" + data.bitcoin.usd.toLocaleString() : "-";
+                    const eth = data.ethereum ? "$" + data.ethereum.usd.toLocaleString() : "-";
+                    const sol = data.solana ? "$" + data.solana.usd.toLocaleString() : "-";
+                    const usdt = data.tether ? "$" + data.tether.usd : "-";
+                    
+                    document.getElementById('cryptoTicker').innerHTML = 
+                        `🚀 <span class="text-cyan-400 font-bold">BTC:</span> ${btc} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
+                        `💎 <span class="text-purple-400 font-bold">ETH:</span> ${eth} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
+                        `⚡ <span class="text-emerald-400 font-bold">SOL:</span> ${sol} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
+                        `💵 <span class="text-teal-400 font-bold">USDT:</span> ${usdt} &nbsp;&nbsp;|&nbsp;&nbsp; ` +
+                        `🔀 <span class="text-cyan-300 font-bold">USD/IDR:</span> Rp ${Math.round(liveUsdRate).toLocaleString('id-ID')}`;
+                }
+            } catch (err) {
+                document.getElementById('cryptoTicker').innerText = "⚡ FinDesk Web3 Tools - Real-Time Financial Utility";
+            }
+        }
+
         fetchLiveRate();
+        fetchCryptoPrices();
+        setInterval(fetchCryptoPrices, 60000); // Update crypto tiap 1 menit
+
+        function toggleDirection() {
+            isUsdToIdr = !isUsdToIdr;
+            const inputLabel = document.getElementById('inputLabel');
+            const hasilLabel = document.getElementById('hasilLabel');
+            const convTitle = document.getElementById('convTitle');
+            const inputField = document.getElementById('jumlahUsdt');
+
+            if (isUsdToIdr) {
+                convTitle.innerText = "USD / USDT ➔ IDR";
+                inputLabel.innerText = "Masukkan Jumlah USD / USDT ($)";
+                hasilLabel.innerText = "Hasil Konversi Ke IDR:";
+                inputField.placeholder = "Contoh: 5";
+            } else {
+                convTitle.innerText = "IDR ➔ USD / USDT";
+                inputLabel.innerText = "Masukkan Jumlah Rupiah (Rp)";
+                hasilLabel.innerText = "Hasil Konversi Ke USD / USDT:";
+                inputField.placeholder = "Contoh: 100000";
+            }
+            inputField.value = "";
+            document.getElementById('totalIdr').innerText = isUsdToIdr ? "Rp 0" : "$ 0.00";
+        }
 
         function switchTab(selected) {
             tabs.forEach(tab => {
@@ -284,7 +356,6 @@
 
             const activeElem = document.getElementById(`tool-${selected}`);
             activeElem.classList.remove('hidden');
-            // Trigger reflow for animation restart
             void activeElem.offsetWidth;
             activeElem.classList.add('animate-tab-content');
 
@@ -299,9 +370,7 @@
             document.getElementById('upahPerJam').innerText = "Rp " + Math.round(perJam).toLocaleString('id-ID');
             document.getElementById('totalLembur').innerText = "Rp " + Math.round(totalLembur).toLocaleString('id-ID');
             document.getElementById('totalGajiBersih').innerText = "Rp " + Math.round(gaji + totalLembur).toLocaleString('id-ID');
-            
-            const hasil = document.getElementById('hasilGaji');
-            hasil.classList.remove('hidden');
+            document.getElementById('hasilGaji').classList.remove('hidden');
         }
 
         function hitungTrading() {
@@ -312,15 +381,18 @@
             const posSize = sl > 0 ? (maxRisk / sl) : 0;
             document.getElementById('maxRiskUsd').innerText = "$ " + maxRisk.toFixed(2);
             document.getElementById('posSize').innerText = posSize.toFixed(2) + " Unit / Lot";
-            
-            const hasil = document.getElementById('hasilTrading');
-            hasil.classList.remove('hidden');
+            document.getElementById('hasilTrading').classList.remove('hidden');
         }
 
         function hitungCrypto() {
-            const usdt = parseFloat(document.getElementById('jumlahUsdt').value) || 0;
-            const total = usdt * liveUsdRate;
-            document.getElementById('totalIdr').innerText = "Rp " + Math.round(total).toLocaleString('id-ID');
+            const inputVal = parseFloat(document.getElementById('jumlahUsdt').value) || 0;
+            if (isUsdToIdr) {
+                const total = inputVal * liveUsdRate;
+                document.getElementById('totalIdr').innerText = "Rp " + Math.round(total).toLocaleString('id-ID');
+            } else {
+                const totalUsd = liveUsdRate > 0 ? (inputVal / liveUsdRate) : 0;
+                document.getElementById('totalIdr').innerText = "$ " + totalUsd.toFixed(2);
+            }
         }
 
         function hitungUmur() {
@@ -341,16 +413,14 @@
             }
 
             document.getElementById('detailUmur').innerText = `${thn} Tahun, ${bln} Bulan, ${hari} Hari`;
-            const hasil = document.getElementById('hasilUmur');
-            hasil.classList.remove('hidden');
+            document.getElementById('hasilUmur').classList.remove('hidden');
         }
 
         function hitungZakat() {
             const harta = parseFloat(document.getElementById('jumlahHarta').value) || 0;
             const zakat = harta * 0.025;
             document.getElementById('totalZakat').innerText = "Rp " + Math.round(zakat).toLocaleString('id-ID');
-            const hasil = document.getElementById('hasilZakat');
-            hasil.classList.remove('hidden');
+            document.getElementById('hasilZakat').classList.remove('hidden');
         }
 
         function openModal(type) {
@@ -363,14 +433,13 @@
                     <p class="text-xs text-slate-400 mb-4">Punya pertanyaan atau penawaran kerjasama? Hubungi kami:</p>
                     <div class="space-y-3 text-xs text-slate-300 font-medium">
                         <p class="flex items-center gap-2">
-                            <span>Telegram:</span> 
-                            <a href="https://t.me/VyRamadhan" target="_blank" class="text-cyan-400 font-bold underline hover:text-cyan-300">@VyRamadhan</a>
+                            <span>💬 Telegram:</span> 
+                            <a href="https://t.me/VyRamadhan" target="_blank" class="text-cyan-400 font-bold underline hover:text-cyan-300">Telegram</a>
                         </p>
                         <p class="flex items-center gap-2">
-                            <span>Email:</span> 
-                            <a href="mailto:kingdobleh@gmail.com" class="text-emerald-400 underline">kingdobleh@gmail.com</a>
+                            <span>📧 Email:</span> 
+                            <a href="mailto:support.findesk@gmail.com" class="text-emerald-400 underline">support.findesk@gmail.com</a>
                         </p>
-                        <p>📍 Location: Indonesia</p>
                     </div>
                 `;
             } else if (type === 'privacy') {
