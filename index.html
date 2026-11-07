@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Finansial & Trading Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">FinTools ID</h1>
+            <span class="text-sm bg-blue-700 px-3 py-1 rounded-full">Kalkulator Gratis</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 flex-grow w-full">
+
+        <!-- Slot Iklan Top Banner -->
+        <div class="my-4 p-4 bg-gray-200 border border-dashed border-gray-400 text-center text-xs text-gray-500 rounded">
+            [ Slot Iklan AdSense Header / Top Banner (728x90) ]
+        </div>
+
+        <!-- Pilihan Tool / Tab -->
+        <div class="flex border-b border-gray-200 mb-6">
+            <button onclick="switchTab('gaji')" id="tab-gaji" class="py-2 px-4 border-b-2 font-medium text-sm border-blue-600 text-blue-600 focus:outline-none">
+                Kalkulator Gaji & Lembur
+            </button>
+            <button onclick="switchTab('trading')" id="tab-trading" class="py-2 px-4 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 focus:outline-none">
+                Risk-Reward Trading
+            </button>
+        </div>
+
+        <!-- Tool 1: Kalkulator Gaji Bersih -->
+        <div id="tool-gaji" class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <h2 class="text-lg font-bold mb-4 text-gray-900">Hitung Gaji Bersih & Lembur Per Jam</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Gaji Pokok Bulanan (Rp)</label>
+                    <input type="number" id="gajiPokok" placeholder="Contoh: 5000000" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Jumlah Jam Lembur</label>
+                    <input type="number" id="jamLembur" placeholder="Contoh: 10" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
+            <button onclick="hitungGaji()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+                Hitung Sekarang
+            </button>
+
+            <!-- Hasil Hitung Gaji -->
+            <div id="hasilGaji" class="mt-6 hidden p-4 bg-blue-50 border border-blue-200 rounded">
+                <h3 class="font-bold text-blue-900 mb-2">Hasil Perhitungan:</h3>
+                <p class="text-sm">Upah Lembur per Jam: <span id="upahPerJam" class="font-semibold text-gray-900"></span></p>
+                <p class="text-sm">Total Uang Lembur: <span id="totalLembur" class="font-semibold text-gray-900"></span></p>
+                <p class="text-base font-bold text-blue-800 mt-2">Total Estimasi Pendapatan: <span id="totalGajiBersih"></span></p>
+            </div>
+        </div>
+
+        <!-- Tool 2: Kalkulator Trading Risk -->
+        <div id="tool-trading" class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hidden">
+            <h2 class="text-lg font-bold mb-4 text-gray-900">Kalkulator Risk-Reward Trading</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Modal / Balance ($)</label>
+                    <input type="number" id="modalTrading" placeholder="1000" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Toleransi Risiko (%)</label>
+                    <input type="number" id="persenResiko" placeholder="1" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Jarak Stop Loss (Pips/%)</label>
+                    <input type="number" id="jarakSL" placeholder="20" class="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
+            <button onclick="hitungTrading()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+                Hitung Ukuran Posisi
+            </button>
+
+            <!-- Hasil Trading -->
+            <div id="hasilTrading" class="mt-6 hidden p-4 bg-green-50 border border-green-200 rounded">
+                <h3 class="font-bold text-green-900 mb-2">Manajemen Risiko:</h3>
+                <p class="text-sm">Maksimal Resiko ($): <span id="maxRiskUsd" class="font-semibold text-gray-900"></span></p>
+                <p class="text-base font-bold text-green-800 mt-1">Rekomendasi Position Size: <span id="posSize"></span></p>
+            </div>
+        </div>
+
+        <!-- Slot Iklan Tengah (In-Article) -->
+        <div class="my-6 p-4 bg-gray-200 border border-dashed border-gray-400 text-center text-xs text-gray-500 rounded">
+            [ Slot Iklan AdSense In-Article / Result Banner ]
+        </div>
+
+        <!-- Konten Edukasi Pendukung SEO & AdSense -->
+        <article class="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-4 text-sm leading-relaxed text-gray-600">
+            <h3 class="text-base font-bold text-gray-900">Mengapa Penting Menggunakan Kalkulator Finansial?</h3>
+            <p>
+                Perhitungan keuangan yang presisi adalah kunci utama manajemen finansial yang sehat. Bagi pekerja, memahami perhitungan upah lembur berdasarkan UU Ketenagakerjaan membantu memastikan hak pendapatan bulanan diterima secara transparan.
+            </p>
+            <p>
+                Sementara itu bagi para penggiat investasi dan <em>trader</em>, menggunakan alat manajemen risiko (Risk-Reward Calculator) membantu menjaga ketahanan modal agar tidak mengalami kebangkrutan saat kondisi pasar sedang bergejolak.
+            </p>
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center p-4 text-xs mt-12">
+        <p>&copy; 2026 FinTools ID. All rights reserved.</p>
+        <div class="mt-2 space-x-4">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <a href="#" class="hover:underline">Terms of Service</a>
+            <a href="#" class="hover:underline">Contact</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function switchTab(tab) {
+            document.getElementById('tool-gaji').classList.add('hidden');
+            document.getElementById('tool-trading').classList.add('hidden');
+            document.getElementById('tab-gaji').className = "py-2 px-4 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 focus:outline-none";
+            document.getElementById('tab-trading').className = "py-2 px-4 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 focus:outline-none";
+
+            if (tab === 'gaji') {
+                document.getElementById('tool-gaji').classList.remove('hidden');
+                document.getElementById('tab-gaji').className = "py-2 px-4 border-b-2 font-medium text-sm border-blue-600 text-blue-600 focus:outline-none";
+            } else {
+                document.getElementById('tool-trading').classList.remove('hidden');
+                document.getElementById('tab-trading').className = "py-2 px-4 border-b-2 font-medium text-sm border-blue-600 text-blue-600 focus:outline-none";
+            }
+        }
+
+        function hitungGaji() {
+            const gaji = parseFloat(document.getElementById('gajiPokok').value) || 0;
+            const jam = parseFloat(document.getElementById('jamLembur').value) || 0;
+            
+            // Rumus standar 1/173 x Gaji
+            const perJam = gaji / 173;
+            const totalLembur = perJam * jam;
+            const totalBersih = gaji + totalLembur;
+
+            document.getElementById('upahPerJam').innerText = "Rp " + Math.round(perJam).toLocaleString('id-ID');
+            document.getElementById('totalLembur').innerText = "Rp " + Math.round(totalLembur).toLocaleString('id-ID');
+            document.getElementById('totalGajiBersih').innerText = "Rp " + Math.round(totalBersih).toLocaleString('id-ID');
+            
+            document.getElementById('hasilGaji').classList.remove('hidden');
+        }
+
+        function hitungTrading() {
+            const modal = parseFloat(document.getElementById('modalTrading').value) || 0;
+            const persen = parseFloat(document.getElementById('persenResiko').value) || 0;
+            const sl = parseFloat(document.getElementById('jarakSL').value) || 0;
+
+            const maxRisk = modal * (persen / 100);
+            const posSize = sl > 0 ? (maxRisk / sl) : 0;
+
+            document.getElementById('maxRiskUsd').innerText = "$ " + maxRisk.toFixed(2);
+            document.getElementById('posSize').innerText = posSize.toFixed(2) + " Unit / Lot";
+
+            document.getElementById('hasilTrading').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
